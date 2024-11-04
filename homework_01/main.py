@@ -2,22 +2,30 @@ import json
 import pprint
 import uuid
 import re
+from typing import Optional, Union
 
 file_path = 'users.json'
 
 
-def read_file(path):
+def read_file(path: str) -> dict:
+    """Читает json-файл и возвращает содержимое в виде словаря."""
     data_file = open(path, 'r', encoding='utf-8')
     data = json.load(data_file)
     data_file.close()
     return data
 
-def print_all_contacts(path):
+
+def print_all_contacts(path: str) -> None:
+    """Печатает в консоли все контакты из файла."""
     data = read_file(path)
     pprint.pp(data, width=100)
     
 
-def search_by_fullname(path, fullname):
+def search_by_fullname(path: str, fullname: str) -> Union[dict, str]:
+    """Ищет контакт по точному совпадению с полем ФИО.
+
+    Возвращает либо словарь с атрибутами найденного контакта, либо строку 'Совпадений нет'.
+    """
     data = read_file(path)
     for id in data.keys():
         if data[id]['ФИО'] == fullname:
@@ -25,13 +33,19 @@ def search_by_fullname(path, fullname):
     return 'Совпадений нет'
 
 
-def search_by_id(path, contact_id):
+def search_by_id(path: str, contact_id: str) -> dict:
+    """Ищет и возвращает контакт по уникальному ID (UUID)."""
     data = read_file(path)
     if contact_id in data:
         return data[contact_id]
 
 
-def regexp_search(path, search_string):
+def regexp_search(path: str, search_string: str) -> None:
+    """Ищет контакты по произвольной строке.
+    
+    Регистронезависисмый поиск по всем полям контактов.
+    Печатает в консоль списко найденных контактов либо строку 'Совпадений не найдено'.
+    """
     data = read_file(path)
     pattern = re.compile(search_string, re.IGNORECASE)
     found_keys = {}
@@ -51,7 +65,12 @@ def regexp_search(path, search_string):
         print("\n !!! Совпадений не найдено !!!")
 
 
-def add_contact(path, contact):
+def add_contact(path: str, contact: dict) -> None:
+    """Функция добавление нового контакта в файл справочника.
+
+    Проверяет на совпадение с существующими контактами по полю ФИО.
+    Генерирует уникальный UUID и назначает его новому контакту.
+    """
     data = read_file(path)
     new_uuid = str(uuid.uuid4())
     while new_uuid in data:
@@ -65,7 +84,8 @@ def add_contact(path, contact):
         print('!!! Контакт с таким ФИО уже существует !!!')
 
 
-def del_contact(path, contact_id):
+def del_contact(path: str, contact_id: str) -> None:
+    """Функция удаления контакта."""
     data = read_file(path)
     if contact_id in data:
         del data[contact_id]
@@ -74,7 +94,8 @@ def del_contact(path, contact_id):
         print('!!! Контакт удален !!!')
 
 
-def change_contact(path, contact_id):
+def change_contact(path: str, contact_id: str) -> None:
+    """Функция изменения контакта и сохранения его в файле."""
     data = read_file(path)
     if contact_id in data:
         old_contact = data[contact_id].copy()
@@ -106,7 +127,8 @@ def change_contact(path, contact_id):
         print('\n !!! Контакт остался без изменений !!!')
    
 
-def menu():
+def menu() -> None:
+    """Основная функция для работы с меню справочника."""
     ans=True
     while ans:
         print ("""
