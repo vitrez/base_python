@@ -33,11 +33,3 @@ async def get_book(book_id: int):
     for b in books:
         if b.id == int(book_id):
             return {"book": b}
-
-
-# @router.put("/books/update/{book_id}")
-# async def update_books(book_id: int, book: Book):
-#     for index, b in enumerate(books):
-#         if b.id == book_id:
-#             books[index] = book
-#             return {"book": book, "status": "updated"}
