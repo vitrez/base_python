@@ -5,7 +5,6 @@
 FROM python:3.12-bookworm
 
 ENV APP=/opt/app
-RUN mkdir ${APP}
 WORKDIR ${APP}
 COPY requirements.txt app.py ./
 RUN pip install --no-cache-dir --upgrade pip && \
