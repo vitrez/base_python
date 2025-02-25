@@ -86,6 +86,8 @@ async def async_main() -> None:
 
     async with async_session_factory() as session:
         await create_posts(session, posts_data)
+
+    async with async_session_factory() as session:
         await get_users_with_posts(session)
         await get_posts_with_users(session)
 
