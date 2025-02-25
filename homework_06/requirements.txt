@@ -1,0 +1,6 @@
+SQLAlchemy==2.0.37
+asyncpg==0.30.0
+pydantic_core==2.27.2
+aiohttp==3.11.11
+typing_extensions==4.12.2
+anyio==4.6.2.post1
